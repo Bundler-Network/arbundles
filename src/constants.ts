@@ -6,6 +6,7 @@ export enum SignatureConfig {
   INJECTEDAPTOS = 5,
   MULTIAPTOS = 6,
   TYPEDETHEREUM = 7,
+  STARKNET = 8,
 }
 
 export interface SignatureMeta {
@@ -50,4 +51,9 @@ export const SIG_CONFIG: Record<SignatureConfig, SignatureMeta> = {
     pubLength: 42,
     sigName: "typedEthereum",
   },
+  [SignatureConfig.STARKNET]:{
+    sigLength:65,
+    pubLength: 65,
+    sigName:'starknet'
+  }
 };

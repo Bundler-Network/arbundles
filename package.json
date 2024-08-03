@@ -143,7 +143,8 @@
     "base64url": "^3.0.1",
     "bs58": "^4.0.1",
     "keccak": "^3.0.2",
-    "secp256k1": "^5.0.0"
+    "secp256k1": "^5.0.0",
+    "starknet": "^6.11.0"
   },
   "optionalDependencies": {
     "@randlabs/myalgo-connect": "^1.1.2",
