@@ -53,7 +53,7 @@ export const SIG_CONFIG: Record<SignatureConfig, SignatureMeta> = {
   },
   [SignatureConfig.STARKNET]:{
     sigLength:65,
-    pubLength: 65,
+    pubLength: 31,
     sigName:'starknet'
   }
 };

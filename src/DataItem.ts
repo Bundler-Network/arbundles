@@ -224,7 +224,7 @@ export class DataItem implements BundleItem {
         const tags: { name: string; value: string }[] = deserializeTags(
           Buffer.from(buffer.subarray(tagsStart + 16, tagsStart + 16 + numberOfTagBytes)),
         );
-
+        console.log('tagsbyte',numberOfTagBytes)
         if (tags.length !== numberOfTags) {
           return false;
         }
