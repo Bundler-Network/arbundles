@@ -31,21 +31,23 @@ describe("Typed Starknet Signer", () => {
   let signer: StarknetSigner;
   const provider = new RpcProvider({ nodeUrl: "https://starknet-sepolia.public.blastapi.io" });
 
-  const PrivateKey = "0x005d5c250b5c181684ae6d8ebfa0faeac3ad0c6f31a6c2f102a2fffddba00a05";
-  const myAddressInStarknet = "0x02F659cf8CCE41168B8c0A8BedCE468E33BE1B7bd26E920266C025Dc0F8FBD1b";
+  const PrivateKey = "0x0570d0ab0e4bd9735277e8db6c8e19918c64ed50423aa5860235635d2487c7bb";
+  const myAddressInStarknet = "0x078e47BBEB4Dc687741825d7bEAD044e229960D3362C0C21F45Bb920db08B0c4";
 
   beforeAll(async () => {
     signer = new StarknetSigner(provider, myAddressInStarknet, PrivateKey);
-    await signer.init();
   });
 
   it("should sign a known value", async () => {
     const data = Buffer.from("Hello-world!");
     const expectedSignature = Buffer.from([
-      2, 154, 223, 194, 248, 201, 115, 24, 151, 209, 169, 144, 101, 125, 81, 118, 127, 193, 75, 181, 252, 203, 34, 209, 32, 188, 0, 51, 207, 153, 230,
-      253, 2, 158, 118, 14, 24, 86, 192, 14, 32, 126, 155, 125, 147, 175, 89, 174, 56, 100, 178, 79, 171, 232, 78, 215, 3, 216, 2, 18, 30, 90, 14, 32,
-      1,
-    ]);
+      1, 114, 235,  23,  11, 129, 235,  41, 193,  99,  37, 195,
+      7,  92, 120, 196, 216,  86, 170, 132,  45,  38, 234, 192,
+     92, 108,  83, 180, 250,  64,  95,   2,   0, 119, 220,  61,
+    212, 202, 154, 141, 140, 112,  99, 169, 204,   5, 232,   4,
+    203, 246,   9,  70, 254,  36, 150, 193,  72,   0,  15,  25,
+    127,  59, 138, 239,   1
+  ])
 
     const signature = await signer.sign(data);
     const signatureBuffer = Buffer.from(signature);

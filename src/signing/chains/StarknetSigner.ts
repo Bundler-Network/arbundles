@@ -19,7 +19,7 @@ export default class StarknetSigner implements Signer {
   public static address: string;
   private static privateKey: string;
   public static provider: RpcProvider;
-  public static chainId: string;
+  public chainId: string;
   readonly ownerLength: number = SIG_CONFIG[SignatureConfig.STARKNET].pubLength;
   readonly signatureLength: number = SIG_CONFIG[SignatureConfig.STARKNET].sigLength;
   readonly signatureType: number = SignatureConfig.STARKNET;
@@ -38,17 +38,20 @@ export default class StarknetSigner implements Signer {
       const pub_key = await signer.getPubKey();
       let hexKey = pub_key.startsWith("0x") ? pub_key.slice(2) : pub_key;
       this.publicKey = Buffer.from(0 + hexKey, "hex");
-      StarknetSigner.chainId = await StarknetSigner.provider.getChainId();
+      this.chainId = await StarknetSigner.provider.getChainId();
     } catch (error) {
       console.error("Error setting public key or chain ID:", error);
     }
   }
 
   async sign(message: Uint8Array, _opts?: any): Promise<Uint8Array> {
+    if (!this.publicKey) {
+      this.init();
+    }
     if (!this.signer.signMessage) throw new Error("Selected signer does not support message signing");
-
+    let chainId = await this.signer.getChainId();
     let message_to_felt = convertToFelt252(message);
-    let TypedDataMessage = typed_domain({ chainId: StarknetSigner.chainId, message: message_to_felt });
+    let TypedDataMessage = typed_domain({ chainId: chainId, message: message_to_felt });
     let signature: Signature = (await this.signer.signMessage(TypedDataMessage.typemessage)) as WeierstrassSignatureType;
 
     const r = BigInt(signature.r).toString(16).padStart(64, "0");
@@ -69,8 +72,9 @@ export default class StarknetSigner implements Signer {
   }
 
   static async verify(_pk: Buffer, message: Uint8Array, _signature: Uint8Array, _opts?: any): Promise<boolean> {
+    let chainId = await this.provider.getChainId();
     let message_to_felt = convertToFelt252(message);
-    let TypedDataMessage = typed_domain({ chainId: StarknetSigner.chainId, message: message_to_felt });
+    let TypedDataMessage = typed_domain({ chainId, message: message_to_felt });
 
     const fullPubKey = encode.addHexPrefix(encode.buf2hex(ec.starkCurve.getPublicKey(StarknetSigner.privateKey, true)));
 
