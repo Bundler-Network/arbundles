@@ -1,4 +1,7 @@
 # ANS-104 Bundles
+# DEPRECATED
+This package has been deprecated and is no longer actively supported. We recommend migrating to [Irys - the world’s first programmable datachain](https://migrate-to.irys.xyz).
+
 
 **If you want to use Bundlr Network head over to [this repo](https://github.com/Bundlr-Network/js-client)**
 
